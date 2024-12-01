@@ -1,0 +1,16 @@
+{% extends 'admin/ltbase.html' %} {% load static %} {% block content %}
+<div class="content-wrapper">
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      
+      {{form.as_p }}
+      <input type="submit" value="Submit" class="btn btn-primary mb-2" />
+    </form>
+    <a href="{% url 'list' %}"
+      ><button class="btn btn-danger">View List</button></a
+    >
+  </div>
+</div>
+
+{% endblock %}

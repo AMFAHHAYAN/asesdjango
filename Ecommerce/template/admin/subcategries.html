@@ -1,0 +1,40 @@
+{% extends 'admin/ltbase.html' %} {% load static %} {% block content %}
+<div class="content-wrapper">
+  <div class="container mt-2">
+    <h3>Sub Category List</h3>
+    <a href="/subcatform"><button class="btn btn-success">ADD Product</button></a>
+    <div class="container">
+      <table class="table table-bordered">
+        <tr>
+          <th>Subcategory ID</th>
+          <th>Subcategory Name</th>
+          <th>Subcategory Description</th>
+          <th>Category</th>
+          <th>Actions</th>
+
+        </tr>
+        {% for dat in data %}
+        <tr>
+          <td>{{dat.title}}</td>
+          <td>{{dat.author}}</td>
+          <td>{{dat.published_date}}</td>
+          <td>{{dat.isbn}}</td>
+          <td>
+            <a href="{% url 'update' dat.id %}">
+              <button class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-pen">Update</i>
+              </button>
+            </a>
+            <a href="{% url 'delete' dat.id %}">
+              <button class="btn btn-outline-danger btn-sm">
+                <i class="fas fa-pen">Delete</i>
+              </button>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'admin/ltbase.html' %} {% load static %} {% block content %}
+<div class="content-wrapper">
+  <div class="container mt-2">
+    <h3>Product List</h3>
+    <a href="/prodform"><button class="btn btn-success">ADD Product</button></a>
+    <div class="container">
+      <table class="table table-bordered">
+        <tr>
+          <th>Product Image</th>
+          <th>Product Name</th>
+          <th>Product Category</th>
+          <th>Product Subcategory</th>
+          <th>Product Description</th>
+          <th>Product Price</th>
+          <th>Product Stock</th>
+          <th>Product Created</th>
+          <th>Actions</th>
+
+        </tr>
+        {% for dat in data %}
+        <tr>
+          <td>{{dat.title}}</td>
+          <td>{{dat.author}}</td>
+          <td>{{dat.published_date}}</td>
+          <td>{{dat.isbn}}</td>
+          <td>{{dat.price}}</td>
+          <td>{{dat.genre}}</td>
+          <td>{{dat.language}}</td>
+          <td>
+            <a href="{% url 'update' dat.id %}">
+              <button class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-pen">Update</i>
+              </button>
+            </a>
+            <a href="{% url 'delete' dat.id %}">
+              <button class="btn btn-outline-danger btn-sm">
+                <i class="fas fa-pen">Delete</i>
+              </button>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
