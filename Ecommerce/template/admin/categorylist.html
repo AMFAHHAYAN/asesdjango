@@ -1,37 +1,106 @@
-{% extends 'admin/ltbase.html' %} {% load static %} {% block content %}
+{% extends 'admin/ltbase.html' %} 
+{% load static %} 
+
+{% block content %}
 <div class="content-wrapper">
   <div class="container mt-2">
     <h3>Category List</h3>
-    <a href="/catform"><button class="btn btn-success">ADD Category</button></a>
-    <div class="container">
-      <table class="table table-bordered">
-        <tr>
-          <th>Category ID</th>
-          <th>Category Name</th>
-          <th>Category Description</th>
-          <th>Actions</th>
+    
+    <!-- Search and Add Category Row -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <form method="get" class="form-inline">
+          <input type="text" name="search" class="form-control mr-2" 
+                 placeholder="Search Categories" 
+                 value="{{ search_query }}">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+      <div class="col-md-6 text-right">
+        <a href="{% url 'catform' %}" class="btn btn-success">
+          <i class="fas fa-plus"></i> Add Category
+        </a>
+      </div>
+    </div>
 
-        </tr>
-        {% for dat in data %}
-        <tr>
-          <td>{{dat.title}}</td>
-          <td>{{dat.author}}</td>
-          <td>{{dat.published_date}}</td>
-          <td>
-            <a href="{% url 'update' dat.id %}">
-              <button class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-pen">Update</i>
-              </button>
-            </a>
-            <a href="{% url 'delete' dat.id %}">
-              <button class="btn btn-outline-danger btn-sm">
-                <i class="fas fa-pen">Delete</i>
-              </button>
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
+    <!-- Category Table -->
+    <div class="container">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Category ID</th>
+            <th>Category Name</th>
+            <th>Description</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for category in categories %}
+          <tr>
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.description|truncatechars:50 }}</td>
+            <td>{{ category.created_at|date:"d M Y" }}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a href="{% url 'catogdelete' category.id %}" 
+                   class="btn btn-outline-danger btn-sm">
+                  <i class="fas fa-trash"></i> Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">
+              {% if search_query %}
+                No categories found matching "{{ search_query }}"
+              {% else %}
+                No categories available
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
+
+      <!-- Pagination -->
+      {% if categories.has_other_pages %}
+      <nav aria-label="Category list pagination">
+        <ul class="pagination justify-content-center">
+          {% if categories.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ categories.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                Previous
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in categories.paginator.page_range %}
+            {% if categories.number == num %}
+              <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                  {{ num }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if categories.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ categories.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                Next
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
     </div>
   </div>
 </div>

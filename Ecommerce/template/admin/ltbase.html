@@ -50,7 +50,7 @@
             ></a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin" class="nav-link">Dashboard</a>
+            <a href="/admindashboard" class="nav-link">Dashboard</a>
           </li>
         </ul>
 
@@ -173,7 +173,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="#"
+              href="/logout"
               role="button"
             >
             <i class="fas fa-sign-out-alt"></i>
@@ -240,7 +240,7 @@
               <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
               <li class="nav-item menu-open">
-                <a href="/admin" class="nav-link active">
+                <a href="/admindashboard  " class="nav-link active">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                     Dashboard
@@ -319,7 +319,17 @@
       <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-
+    {% if messages %} {% for message in messages %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if message.tags == 'success' %}
+    <script>
+      Swal.fire("Success!!", "{{message}}", "success");
+    </script>
+    {% else %}
+    <script>
+      Swal.fire("Oops!", "{{message}}", "error");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
     <script>

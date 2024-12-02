@@ -4,7 +4,7 @@ from .models import Product, Category, Subcategory
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'subcategory', 'stock_quantity', 'photo']
+        fields = ['name', 'description', 'price', 'category','subcategory', 'stock_quantity', 'photo']
         labels = {
             'name': "Product Name", 
             'description': "Product Description", 
@@ -17,7 +17,6 @@ class ProductForm(forms.ModelForm):
             'name': forms.TextInput(attrs={"class": "form-control"}),
             'description': forms.Textarea(attrs={"class": "form-control"}),  # Changed from TextInput
             'price': forms.NumberInput(attrs={"class": "form-control"}),
-            'subcategory': forms.Select(attrs={"class": "form-control"}),
             'stock_quantity': forms.NumberInput(attrs={"class": "form-control"})  # Changed from TextInput
         }
 

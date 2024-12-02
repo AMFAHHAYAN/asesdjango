@@ -1,39 +1,108 @@
-{% extends 'admin/ltbase.html' %} {% load static %} {% block content %}
+{% extends 'admin/ltbase.html' %} 
+{% load static %} 
+
+{% block content %}
 <div class="content-wrapper">
   <div class="container mt-2">
-    <h3>Sub Category List</h3>
-    <a href="/subcatform"><button class="btn btn-success">ADD Product</button></a>
-    <div class="container">
-      <table class="table table-bordered">
-        <tr>
-          <th>Subcategory ID</th>
-          <th>Subcategory Name</th>
-          <th>Subcategory Description</th>
-          <th>Category</th>
-          <th>Actions</th>
+    <h3>Subcategory List</h3>
+    
+    <!-- Search and Add Subcategory Row -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <form method="get" class="form-inline">
+          <input type="text" name="search" class="form-control mr-2" 
+                 placeholder="Search Subcategories" 
+                 value="{{ search_query }}">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+      <div class="col-md-6 text-right">
+        <a href="{% url 'subcatform' %}" class="btn btn-success">
+          <i class="fas fa-plus"></i> Add Subcategory
+        </a>
+      </div>
+    </div>
 
-        </tr>
-        {% for dat in data %}
-        <tr>
-          <td>{{dat.title}}</td>
-          <td>{{dat.author}}</td>
-          <td>{{dat.published_date}}</td>
-          <td>{{dat.isbn}}</td>
-          <td>
-            <a href="{% url 'update' dat.id %}">
-              <button class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-pen">Update</i>
-              </button>
-            </a>
-            <a href="{% url 'delete' dat.id %}">
-              <button class="btn btn-outline-danger btn-sm">
-                <i class="fas fa-pen">Delete</i>
-              </button>
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
+    <!-- Subcategory Table -->
+    <div class="container">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Subcategory ID</th>
+            <th>Subcategory Name</th>
+            <th>Description</th>
+            <th>Parent Category</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for subcategory in subcategories %}
+          <tr>
+            <td>{{ subcategory.id }}</td>
+            <td>{{ subcategory.name }}</td>
+            <td>{{ subcategory.description|truncatechars:50 }}</td>
+            <td>{{ subcategory.category.name }}</td>
+            <td>{{ subcategory.created_at|date:"d M Y" }}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a href="{% url 'subcatogdelete' subcategory.id %}" 
+                   class="btn btn-outline-danger btn-sm">
+                  <i class="fas fa-trash"></i> Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center">
+              {% if search_query %}
+                No subcategories found matching "{{ search_query }}"
+              {% else %}
+                No subcategories available
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
+
+      <!-- Pagination -->
+      {% if subcategories.has_other_pages %}
+      <nav aria-label="Subcategory list pagination">
+        <ul class="pagination justify-content-center">
+          {% if subcategories.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ subcategories.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                Previous
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in subcategories.paginator.page_range %}
+            {% if subcategories.number == num %}
+              <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                  {{ num }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if subcategories.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ subcategories.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                Next
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
     </div>
   </div>
 </div>

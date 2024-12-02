@@ -50,6 +50,12 @@ class Product(models.Model):
         max_digits=10, 
         decimal_places=2, 
     )
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        related_name='products'
+    )
     subcategory = models.ForeignKey(
         Subcategory, 
         on_delete=models.SET_NULL, 
