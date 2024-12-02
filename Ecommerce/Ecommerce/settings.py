@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'AdminApp'
+    'AdminApp',
+    'Userapp'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LOGIN_REDIRECT_URL = '/admin/dashboard/'
+
 
 
 LANGUAGE_CODE = 'en-us'

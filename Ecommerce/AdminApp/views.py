@@ -41,7 +41,7 @@ class AdminLogout(View):
     def get(self, request):
         logout(request)
         messages.success(request, "Successfully logged out.")
-        return redirect('adminlogin')
+        return redirect('/')
 
 class DashboardView(AdminLoginRequiredMixin, View):
     def get(self, request):
@@ -66,7 +66,7 @@ class ProductListView(AdminLoginRequiredMixin, View):
             )
         
       
-        paginator = Paginator(product_list, 5)  
+        paginator = Paginator(product_list, 1)  
         page = request.GET.get('page', 1)
         
         try:
@@ -124,7 +124,7 @@ class CategoryListView(AdminLoginRequiredMixin, View):
                 Q(description__icontains=search_query)
             )
         
-        paginator = Paginator(category_list, 5)
+        paginator = Paginator(category_list, 2)
         page = request.GET.get('page', 1)
         
         try:
@@ -182,7 +182,7 @@ class SubcategoryListView(AdminLoginRequiredMixin, View):
                 Q(category__name__icontains=search_query)
             )
         
-        paginator = Paginator(subcategory_list, 5)
+        paginator = Paginator(subcategory_list, 2)
         page = request.GET.get('page', 1)
         
         try:
@@ -226,3 +226,7 @@ class SubcategoryDeleteView(AdminLoginRequiredMixin, View):
         subcategory.delete()
         messages.success(request, "Subcategory deleted successfully.")
         return redirect('subcatlist')
+    
+class Landing(View):
+    def get(self,request):
+        return render(request,'landing.html')
